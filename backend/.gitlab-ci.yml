@@ -18,9 +18,9 @@ build-backend:
    - go build -o app ./...
    - ls -al app 
    - mkdir momo-store-${VERSION}
-   - ls -al
+   - ls -al momo-store-${VERSION}
    - mv app/api momo-store-${VERSION}/api-${VERSION}
-   - ls -al
+   - ls -al momo-store-${VERSION}
   
   artifacts:
     paths:

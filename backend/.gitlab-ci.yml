@@ -37,9 +37,8 @@ sonarq-backend-check:
     GIT_DEPTH: "0"
   script:
     - cd backend
-    -  sonar-scanner \
-      -Dsonar.projectKey=02_alexander_volokhov_backend_momo \
-      -Dsonar.host.url=https://sonarqube.praktikum-services.ru \
-      -Dsonar.login=b57503060240d9bd248e9803af43d0cf2810f04c
+    - sonar-scanner -Dversion.application=${VERSION} -Dsonar.qualitygate.wait=true -Dsonar.projectKey=02_alexander_volokhov_backend_momo -Dsonar.projectName=02_alexander_volokhov_backend_momo
+      
+      
 
   allow_failure: true

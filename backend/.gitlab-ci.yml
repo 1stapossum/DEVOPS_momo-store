@@ -10,6 +10,7 @@ stages:
 
 build-backend:
   stage: build
+  image: golang:latest
   script:
    - cd backend
    - mkdir app

@@ -7,6 +7,7 @@ variables:
 
 stages:
 - build
+- test
 
 build-backend:
   stage: build
@@ -15,4 +16,13 @@ build-backend:
    - cd backend
    - mkdir app
    - go build -o app ./...
-   - ls -al app
+   - ls -al app 
+   - mkdir momo-store-${VERSION}
+   - ls -al
+   - mv app/api momo-store-${VERSION}/api-${VERSION}
+   - ls -al
+  
+  artifacts:
+    paths:
+    - ${CI_PROJECT_DIR}/backend/momo-store-${VERSION}/api-${VERSION}
+    - ${MAVEN_REPO_PATH}

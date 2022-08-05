@@ -54,8 +54,7 @@ sonarq-backend-check:
 nexus:
   stage: release
   script:
-    - curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" \
-      --upload-file ${CI_PROJECT_DIR}/backend/momo-store-${VERSION}/api-${VERSION} \
-      https://nexus.praktikum-services.ru/repository/momo-alexander_volokhov_backend/momo-store/${VERSION}/api-${VERSION}
+    - curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" --upload-file ${CI_PROJECT_DIR}/backend/momo-store-${VERSION}/api-${VERSION}  ${NEXUS_REPO_URL}/${VERSION}/api-${VERSION}
+    
    
    

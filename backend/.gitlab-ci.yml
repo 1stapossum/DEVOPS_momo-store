@@ -55,6 +55,7 @@ nexus:
   stage: release
   script:
     - curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" \
-      --upload-file sausage-store-${VERSION}.tar.gz \
-      ${NEXUS_FRONTEND_REPO_URL}/sausage-store/${VERSION}/sausage-store-${VERSION}.tar.gz
+      --upload-file ${CI_PROJECT_DIR}/backend/momo-store-${VERSION}/api-${VERSION} \
+      https://nexus.praktikum-services.ru/repository/momo-alexander_volokhov_backend/momo-store/${VERSION}/api-${VERSION}
+   
    

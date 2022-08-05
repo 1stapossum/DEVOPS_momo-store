@@ -10,6 +10,7 @@ stages:
 - build
 - test
 - release
+- docker
 
 some-test-from-template:
   stage: test-before
@@ -56,5 +57,23 @@ nexus:
   script:
     - curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" --upload-file ${CI_PROJECT_DIR}/backend/momo-store-${VERSION}/api-${VERSION}  ${NEXUS_REPO_URL}/${VERSION}/api-${VERSION}
     
-   
-   
+build-docker:
+  stage: docker
+  dependencies:
+    - build-backend
+  image: docker:20.10.12-dind-rootless
+  before_script:
+    - until docker info; do sleep 1; done
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - cd backend
+    - >
+      docker build
+      --build-arg VERSION=$VERSION
+      --tag $CI_REGISTRY_IMAGE/momo-backend:${VERSION}
+      .
+   #- docker push $CI_REGISTRY_IMAGE/sausage-backend:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE/momo-backend:${VERSION}
+# LATEST
+    - docker tag $CI_REGISTRY_IMAGE/momo-backend:${VERSION} $CI_REGISTRY_IMAGE/momo-backend:latest
+    - docker push $CI_REGISTRY_IMAGE/momo-backend:latest   

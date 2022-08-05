@@ -40,7 +40,7 @@ sonarq-backend-check:
   stage: test
   dependencies:
     - build-backend
-  image: sonarsource/sonar-scanner-cli
+  image: sonarsource/sonar-scanner-cli:4.7
   variables:
     SONAR_TOKEN: "${SONAR_TOKEN}"
     SONAR_HOST_URL: "${SONAR_HOST_URL}"
@@ -48,7 +48,7 @@ sonarq-backend-check:
     GIT_DEPTH: "0"
   script:
     - cd backend
-    - sonar-scanner -Dversion.application=${VERSION} -Dsonar.qualitygate.wait=true -Dsonar.projectKey=02_alexander_volokhov_backend_momo -Dsonar.projectName=02_alexander_volokhov_backend_momo
+    - sonar-scanner -Dsonar.login=b6de52aa9ce086941806e84ae9a1a6f187bed1c4 -Dversion.application=${VERSION} -Dsonar.qualitygate.wait=true -Dsonar.projectKey=02_alexander_volokhov_backend_momo -Dsonar.projectName=02_alexander_volokhov_backend_momo
   allow_failure: true
 
 nexus:

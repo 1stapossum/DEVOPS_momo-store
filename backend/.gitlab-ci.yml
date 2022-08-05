@@ -9,6 +9,15 @@ stages:
 - build
 - test
 
+some-test-from-template:
+  stage: test
+  image: golang:latest
+  script:
+    - cd backend
+    - go fmt $(go list ./... | grep -v /vendor/)
+    - go vet $(go list ./... | grep -v /vendor/)
+    - go test -race $(go list ./... | grep -v /vendor/)
+
 build-backend:
   stage: build
   image: golang:latest
@@ -38,7 +47,4 @@ sonarq-backend-check:
   script:
     - cd backend
     - sonar-scanner -Dversion.application=${VERSION} -Dsonar.qualitygate.wait=true -Dsonar.projectKey=02_alexander_volokhov_backend_momo -Dsonar.projectName=02_alexander_volokhov_backend_momo
-      
-      
-
   allow_failure: true

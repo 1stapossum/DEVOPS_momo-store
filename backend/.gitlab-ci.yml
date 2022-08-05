@@ -15,3 +15,4 @@ build-backend:
    - cd backend
    - mkdir app
    - go build -o app ./...
+   - ls -al app

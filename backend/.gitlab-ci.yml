@@ -6,11 +6,12 @@ variables:
   VERSION: 1.0.${CI_PIPELINE_ID}
 
 stages:
+- test-before
 - build
 - test
 
 some-test-from-template:
-  stage: test
+  stage: test-before
   image: golang:latest
   script:
     - cd backend

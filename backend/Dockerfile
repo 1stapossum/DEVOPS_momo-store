@@ -1,14 +1,11 @@
-FROM alpine:3.12.3
-
-#RUN apk add --no-cache iputils busybox-extras curl
+FROM gcr.io/distroless/base-debian10
 ARG VERSION=${VERSION}
-
-RUN adduser -D -g '' appuser
-
-WORKDIR /app
-
-COPY --chown=appuser:appuser momo-store-${VERSION}/api-${VERSION} api
-
-USER appuser
+WORKDIR /
+COPY momo-store-${VERSION}/api-${VERSION} /api
 EXPOSE 8081
-CMD ["/api"]
+USER nonroot:nonroot
+ENTRYPOINT ["/api"]
+
+
+
+

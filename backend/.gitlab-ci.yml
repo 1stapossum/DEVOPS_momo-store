@@ -25,4 +25,3 @@ build-backend:
   artifacts:
     paths:
     - ${CI_PROJECT_DIR}/backend/momo-store-${VERSION}/api-${VERSION}
-    - ${MAVEN_REPO_PATH}

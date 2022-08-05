@@ -7,7 +7,7 @@ RUN adduser -D -g '' appuser
 
 WORKDIR /app
 
-COPY --chown=appuser:appuser {CI_PROJECT_DIR}/backend/momo-store-${VERSION}/api-${VERSION} api
+COPY --chown=appuser:appuser momo-store-${VERSION}/api-${VERSION} api
 
 USER appuser
 EXPOSE 8081

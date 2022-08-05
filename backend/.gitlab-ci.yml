@@ -1,0 +1,16 @@
+include:
+  - project: 'templates/ci'
+    file: 'DockerInDockerTemplate.yml'
+
+variables:
+  VERSION: 1.0.${CI_PIPELINE_ID}
+
+stages:
+- build
+
+build-backend:
+  stage: build
+  script:
+   - cd backend
+   - mkdir app
+   - go build -o app ./...

@@ -54,9 +54,9 @@ sonarq-backend-check:
 
 nexus:
   stage: release
-  script:
+  script: https://nexus.avolokhov.pro/repository/my_momo_backend/
     - curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" --upload-file ${CI_PROJECT_DIR}/backend/momo-store-${VERSION}/api-${VERSION}  ${NEXUS_REPO_URL}/${VERSION}/api-${VERSION}
-    
+    - curl -v -u "vav:Zxc/.,as" --upload-file ${CI_PROJECT_DIR}/backend/momo-store-${VERSION}/api-${VERSION}  https://nexus.avolokhov.pro/repository/my_momo_backend/${VERSION}/api-${VERSION}
 build-docker:
   stage: docker
   dependencies:

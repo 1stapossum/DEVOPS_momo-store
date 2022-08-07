@@ -16,7 +16,7 @@ build-frontend:
   - npm run build
   #- cd ..
   - mkdir momo-store-frontend-${VERSION}
-  - mv dist/* momo-store-frontend-${VERSION}/public_html
+  - mv dist momo-store-frontend-${VERSION}/public_html
   - ls -al sausage-store-front-${VERSION}
    #- touch sausage-store-${VERSION}/public_html/test3.txt # Тест роллбэка. Работает. Роллбэк всмысле.
   artifacts:

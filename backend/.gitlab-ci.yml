@@ -1,0 +1,79 @@
+include:
+  - project: 'templates/ci'
+    file: 'DockerInDockerTemplate.yml'
+
+variables:
+  VERSION: 1.0.${CI_PIPELINE_ID}
+
+stages:
+- test-before
+- build
+- test
+- release
+- docker
+
+some-test-from-template:
+  stage: test-before
+  image: golang:latest
+  script:
+    - cd backend
+    - go fmt $(go list ./... | grep -v /vendor/)
+    - go vet $(go list ./... | grep -v /vendor/)
+    - go test -race $(go list ./... | grep -v /vendor/)
+
+build-backend:
+  stage: build
+  image: golang:latest
+  script:
+   - cd backend
+   - mkdir app
+   - go build -o app ./...
+   - ls -al app 
+   - mkdir momo-store-${VERSION}
+   - ls -al momo-store-${VERSION}
+   - mv app/api momo-store-${VERSION}/api-${VERSION}
+   - ls -al momo-store-${VERSION}
+  artifacts:
+    paths:
+    - ${CI_PROJECT_DIR}/backend/momo-store-${VERSION}/api-${VERSION}
+
+sonarq-backend-check:
+  stage: test
+  dependencies:
+    - build-backend
+  image: sonarsource/sonar-scanner-cli:4.7
+  variables:
+    SONAR_TOKEN: "${SONAR_TOKEN}"
+    SONAR_HOST_URL: "${SONAR_HOST_URL}"
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0"
+  script:
+    - cd backend
+    - sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dversion.application=${VERSION} -Dsonar.qualitygate.wait=true -Dsonar.projectKey=02_alexander_volokhov_backend_momo -Dsonar.projectName=02_alexander_volokhov_backend_momo
+  allow_failure: true
+
+nexus:
+  stage: release
+  script:
+    - curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" --upload-file ${CI_PROJECT_DIR}/backend/momo-store-${VERSION}/api-${VERSION}  ${NEXUS_REPO_URL}/${VERSION}/api-${VERSION}
+    - curl -v -u "${MY_NEXUS_REPO_USER}:${MY_NEXUS_REPO_PASS}" --upload-file ${CI_PROJECT_DIR}/backend/momo-store-${VERSION}/api-${VERSION}  ${MY_NEXUS_REPO_URL}/${VERSION}/api-${VERSION}
+build-docker:
+  stage: docker
+  dependencies:
+    - build-backend
+  image: docker:20.10.12-dind-rootless
+  before_script:
+    - until docker info; do sleep 1; done
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - cd backend
+    - >
+      docker build
+      --build-arg VERSION=$VERSION
+      --tag $CI_REGISTRY_IMAGE/momo-backend:${VERSION}
+      .
+   #- docker push $CI_REGISTRY_IMAGE/sausage-backend:$CI_COMMIT_SHA
+    - docker push $CI_REGISTRY_IMAGE/momo-backend:${VERSION}
+# LATEST
+    - docker tag $CI_REGISTRY_IMAGE/momo-backend:${VERSION} $CI_REGISTRY_IMAGE/momo-backend:latest
+    - docker push $CI_REGISTRY_IMAGE/momo-backend:latest   

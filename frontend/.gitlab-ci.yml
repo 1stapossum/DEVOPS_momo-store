@@ -49,5 +49,5 @@ nexus:
   script:
     - tar czvf momo-frontend-${VERSION}.tar.gz ${CI_PROJECT_DIR}/frontend/momo-store-frontend-${VERSION}/public_html
     - curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" --upload-file momo-frontend-${VERSION}.tar.gz ${NEXUS_REPO_URL}/momo-alexander_volokhov_frontend/${VERSION}/momo-frontend-${VERSION}.tar.gz
-    - curl -v -u "${MY_NEXUS_REPO_USER}:${MY_NEXUS_REPO_PASS}" --upload-file momo-frontend-${VERSION}.tar.gz  ${MY_NEXUS_REPO_URL}/my_momo_frontend/${VERSION}/ momo-frontend-${VERSION}.tar.gz
+    - curl -v -u "${MY_NEXUS_REPO_USER}:${MY_NEXUS_REPO_PASS}" --upload-file momo-frontend-${VERSION}.tar.gz  ${MY_NEXUS_REPO_URL}/my_momo_frontend/${VERSION}/momo-frontend-${VERSION}.tar.gz
     

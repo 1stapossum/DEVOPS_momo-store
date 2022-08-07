@@ -7,6 +7,7 @@ variables:
 
 stages:
   - build
+  - test
 
 build-frontend:
   stage: build
@@ -21,4 +22,23 @@ build-frontend:
    #- touch sausage-store-${VERSION}/public_html/test3.txt # Тест роллбэка. Работает. Роллбэк всмысле.
   artifacts:
     paths:
-    - ${CI_PROJECT_DIR}/frontend/momo-store-frontend-${VERSION}/public_html 
+    - ${CI_PROJECT_DIR}/frontend/momo-store-frontend-${VERSION}/public_html
+
+sonarq-frontend-check:
+  stage: test
+  dependencies:
+    - build-frontend
+  image:
+    name: sonarsource/sonar-scanner-cli:4.7
+    entrypoint: [""]
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
+    GIT_DEPTH: "0"
+  script:
+    - cd frontend
+    - sonar-scanner
+      -Dsonar.projectKey=02_alexander_volokhov_frontend_momo
+      -Dsonar.projectName=02_alexander_volokhov_frontend_momo
+      -Dsonar.host.url=$SONAR_HOST_URL
+      -Dsonar.login=$SONAR_TOKEN
+      -Dsonar.qualitygate.wait=true

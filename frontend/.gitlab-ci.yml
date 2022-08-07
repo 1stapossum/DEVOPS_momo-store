@@ -1,0 +1,24 @@
+include:
+  - project: 'templates/ci'
+    file: 'DockerInDockerTemplate.yml'
+
+variables:
+  VERSION: 1.0.${CI_PIPELINE_ID}
+
+stages:
+  - build
+
+build-frontend:
+  stage: build
+  script:
+  - cd frontend
+  - npm install
+  - npm run build
+  #- cd ..
+  - mkdir momo-store-frontend-${VERSION}
+  - mv dist/frontend momo-store-frontend-${VERSION}/public_html
+  - ls -al sausage-store-front-${VERSION}
+   #- touch sausage-store-${VERSION}/public_html/test3.txt # Тест роллбэка. Работает. Роллбэк всмысле.
+  artifacts:
+    paths:
+    - ${CI_PROJECT_DIR}/frontend/momo-store-frontend-${VERSION}/public_html 

@@ -21,6 +21,7 @@ frontend:
       - "/frontend/.gitlab-ci.yml"
     strategy: depend 
   only:
+    changes:
       - frontend/**/*
     
 

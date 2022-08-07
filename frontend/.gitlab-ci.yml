@@ -63,9 +63,9 @@ frontend-docker:
     - >
       docker build
       --build-arg VERSION=$VERSION
-      --tag $CI_REGISTRY_IMAGE/momo-frontend-${VERSION}
+      --tag $CI_REGISTRY_IMAGE/momo-frontend:${VERSION}
       .
-    - docker push $CI_REGISTRY_IMAGE/momo-frontend-${VERSION}
+    - docker push $CI_REGISTRY_IMAGE/momo-frontend:${VERSION}
   # LATEST
-    - docker tag $CI_REGISTRY_IMAGE/momo-frontend-${VERSION} $CI_REGISTRY_IMAGE/momo-frontend:latest
+    - docker tag $CI_REGISTRY_IMAGE/momo-frontend:${VERSION} $CI_REGISTRY_IMAGE/momo-frontend:latest
     - docker push $CI_REGISTRY_IMAGE/momo-frontend:latest

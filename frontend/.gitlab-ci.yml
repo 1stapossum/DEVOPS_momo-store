@@ -8,6 +8,7 @@ variables:
 stages:
   - build
   - test
+  - release
 
 build-frontend:
   stage: build
@@ -42,3 +43,9 @@ sonarq-frontend-check:
       -Dsonar.host.url=$SONAR_HOST_URL
       -Dsonar.login=$SONAR_TOKEN
       -Dsonar.qualitygate.wait=true
+  
+nexus:
+  stage: release
+  script:
+    - curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" --upload-file ${CI_PROJECT_DIR}/backend/momo-store-${VERSION}/api-${VERSION}  ${NEXUS_REPO_URL}/momo-alexander_volokhov_frontend/${VERSION}/api-${VERSION}
+    - curl -v -u "${MY_NEXUS_REPO_USER}:${MY_NEXUS_REPO_PASS}" --upload-file ${CI_PROJECT_DIR}/backend/momo-store-${VERSION}/api-${VERSION}  ${MY_NEXUS_REPO_URL}/my_momo_frontend/${VERSION}/api-${VERSION}

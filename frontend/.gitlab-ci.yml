@@ -17,7 +17,7 @@ build-frontend:
   #- cd ..
   - mkdir momo-store-frontend-${VERSION}
   - mv dist momo-store-frontend-${VERSION}/public_html
-  - ls -al sausage-store-front-${VERSION}
+  - ls -al momo-store-frontend-${VERSION}/public_html
    #- touch sausage-store-${VERSION}/public_html/test3.txt # Тест роллбэка. Работает. Роллбэк всмысле.
   artifacts:
     paths:

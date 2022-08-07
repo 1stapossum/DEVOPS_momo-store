@@ -9,6 +9,7 @@ stages:
   - build
   - test
   - release
+  - docker
 
 build-frontend:
   stage: build
@@ -17,13 +18,13 @@ build-frontend:
   - npm install
   - npm run build
   #- cd ..
-  - mkdir momo-store-frontend-${VERSION}
-  - mv dist momo-store-frontend-${VERSION}/public_html
-  - ls -al momo-store-frontend-${VERSION}/public_html
-   #- touch sausage-store-${VERSION}/public_html/test3.txt # Тест роллбэка. Работает. Роллбэк всмысле.
+  - mkdir momo-frontend-${VERSION}
+  - mv dist momo-frontend-${VERSION}/public_html
+  - ls -al momo-frontend-${VERSION}/public_html
+   
   artifacts:
     paths:
-    - ${CI_PROJECT_DIR}/frontend/momo-store-frontend-${VERSION}/public_html
+    - ${CI_PROJECT_DIR}/frontend/momo-frontend-${VERSION}/public_html
 
 sonarq-frontend-check:
   stage: test
@@ -47,7 +48,24 @@ sonarq-frontend-check:
 nexus:
   stage: release
   script:
-    - tar czvf momo-frontend-${VERSION}.tar.gz ${CI_PROJECT_DIR}/frontend/momo-store-frontend-${VERSION}/public_html
+    - tar czvf momo-frontend-${VERSION}.tar.gz ${CI_PROJECT_DIR}/frontend/momo-frontend-${VERSION}/public_html
     - curl -v -u "${NEXUS_REPO_USER}:${NEXUS_REPO_PASS}" --upload-file momo-frontend-${VERSION}.tar.gz ${NEXUS_REPO_URL}/momo-alexander_volokhov_frontend/${VERSION}/momo-frontend-${VERSION}.tar.gz
     - curl -v -u "${MY_NEXUS_REPO_USER}:${MY_NEXUS_REPO_PASS}" --upload-file momo-frontend-${VERSION}.tar.gz  ${MY_NEXUS_REPO_URL}/my_momo_frontend/${VERSION}/momo-frontend-${VERSION}.tar.gz
     
+frontend-docker:
+  stage: docker
+  image: docker:20.10.12-dind-rootless
+  before_script:
+    - until docker info; do sleep 1; done
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - cd frontend
+    - >
+      docker build
+      --build-arg VERSION=$VERSION
+      --tag $CI_REGISTRY_IMAGE/momo-frontend-${VERSION}
+      .
+    - docker push $CI_REGISTRY_IMAGE/momo-frontend-${VERSION}
+  # LATEST
+    - docker tag $CI_REGISTRY_IMAGE/momo-frontend-${VERSION} $CI_REGISTRY_IMAGE/momo-frontend:latest
+    - docker push $CI_REGISTRY_IMAGE/momo-frontend:latest

@@ -20,8 +20,8 @@ frontend:
     include:
       - "/frontend/.gitlab-ci.yml"
     strategy: depend 
-#  only:
-#      - frontend/**/*
+  only:
+      - frontend/**/*
     
 
 

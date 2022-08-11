@@ -11,6 +11,7 @@ stages:
 - test
 - release
 - docker
+- deploy
 
 some-test-from-template:
   stage: test-before
@@ -77,3 +78,11 @@ build-docker:
 # LATEST
     - docker tag $CI_REGISTRY_IMAGE/momo-backend:${VERSION} $CI_REGISTRY_IMAGE/momo-backend:latest
     - docker push $CI_REGISTRY_IMAGE/momo-backend:latest   
+
+backend-deploy:
+  stage: deploy
+  image: argoproj/argocd:v2.3.3
+  script:
+   - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app set momo-store -p backend.image=$CI_REGISTRY_IMAGE/momo-backend:${VERSION}
+   - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app sync momo-store
+  when: manual

@@ -82,6 +82,6 @@ build-docker:
 backend-deploy:
   stage: deploy
   image: argoproj/argocd:v2.3.3
-  when: manual
   script:
-   argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app set momo-store -p backend.image=$CI_REGISTRY_IMAGE/momo-backend:${VERSION}
+   - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app set momo-store -p backend.image=$CI_REGISTRY_IMAGE/momo-backend:${VERSION}
+   - argocd --grpc-web --auth-token $ARGO_TOKEN --server $ARGO_SERVER app sync momo-store

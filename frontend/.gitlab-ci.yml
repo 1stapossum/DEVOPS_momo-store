@@ -15,6 +15,7 @@ stages:
 build-frontend:
   stage: build
   script:
+  - node --version
   - cd frontend
   - npm install
   - npm run build

@@ -45,11 +45,12 @@ COPY app/api /api
 EXPOSE 8081
 USER nonroot:nonroot
 ENTRYPOINT ["/api"]
+```
 # Build docker image
 docker build -t backend_image .
 # Run container
 docker run -d -it --network momo --expose 8081 -p 8081:8081 --name backend backend_image
-```
+
 #   2   Репозитории  (См. diploma.pptx в репозитории приложения)
 
 #   2.1  Структура репозитория приложения

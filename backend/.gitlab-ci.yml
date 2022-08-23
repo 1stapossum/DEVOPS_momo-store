@@ -51,8 +51,7 @@ sonarq-backend-check:
   script:
     - cd backend
     - sonar-scanner -Dsonar.login=${SONAR_TOKEN} -Dversion.application=${VERSION} -Dsonar.qualitygate.wait=true -Dsonar.projectKey=02_alexander_volokhov_backend_momo -Dsonar.projectName=02_alexander_volokhov_backend_momo
-  allow_failure: true
-
+  
 nexus:
   stage: release
   script:

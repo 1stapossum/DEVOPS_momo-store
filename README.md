@@ -96,7 +96,7 @@ https://gitlab.praktikum-services.ru/antinitrino/infra-momo-store-antinitrino
 terraform init -backend-config=backend.conf
 terraform apply -var-file secret.tfvars
 ```
-#   2.3.2   Сервисная нода "DEVOPS"
+#   2.3.2   Сервисная нода "DEVOPS" (Nexus,Sonarqube)
 ```
 terraform init -backend-config=backend.conf
 terraform apply -var-file secret.tfvars

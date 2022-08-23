@@ -86,7 +86,7 @@ https://gitlab.praktikum-services.ru/antinitrino/infra-momo-store-antinitrino
 │   ├── policy.yaml
 │   └── user.yml
 ├── README.md
-└── terraform                    -  terraform манифесты для деплоя кластера k8s и сервисной ВМ Devops
+└── terraform                    -  terraform манифесты для деплоя кластера k8s и сервисной ВМ Devops(Nexus,Sonarqube)
     ├── devops-node
     └── k8s-cluster
 ```

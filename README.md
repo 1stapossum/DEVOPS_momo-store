@@ -1,17 +1,18 @@
 # Momo Store aka Пельменная №2 
-
+```
 URL:    momo-store.avolokhov.pro
-
+```
 
 <img width="900" alt="image" src="https://user-images.githubusercontent.com/9394918/167876466-2c530828-d658-4efe-9064-825626cc6db5.png">
-
+```
 Git flow: Trunk-Based Development
-
+```
 #   1 Локальное развертывание приложения (тестировалось сразу в Docker)
 
 ## Frontend
-
+```
 Node v16.9.1 (on runner works fine)
+```
 ###   build frontend
 ```
 npm install
@@ -25,17 +26,22 @@ COPY dist/public_html /usr/share/nginx/html/
 EXPOSE 80
 ```
 # Build docker image
+```
 docker build -t frontend_image .
+```
 # Run container
+```
 docker run -d -it --network momo --expose 80 -p 80:80 --name frontend frontend_image
-
+```
 
 ## Backend
-
+```
 Golang 1.17 (:latest works fine too)
+```
 ###   build api
+```
 go build -o app ./...
-
+```
 #   Dockerfile
 ```
 FROM gcr.io/distroless/base-debian10
@@ -47,10 +53,13 @@ USER nonroot:nonroot
 ENTRYPOINT ["/api"]
 ```
 # Build docker image
+```
 docker build -t backend_image .
+```
 # Run container
+```
 docker run -d -it --network momo --expose 8081 -p 8081:8081 --name backend backend_image
-
+```
 #   2   Репозитории  (См. diploma.pptx в репозитории приложения)
 
 #   2.1  Структура репозитория приложения
@@ -149,8 +158,9 @@ spec:
 
 
 #   3   Правила внесения изменений в репозиторий
+```
 Все изменения производятся в новой ветке, создаваемой из main, после чего делается Merge Request
-
+```
 #   4   Версионирование
 ```
 Версионирование для backend и frontend производится через переменную в пайплайнах
